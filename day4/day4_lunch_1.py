@@ -40,8 +40,6 @@ C = array_from_len_file( "dm3.len" )
 set_bits_from_file( C, "DM3_Kc_SuHW.bed" )
 
 
-
-
 ##for key, value in arrays.iteritems(): 
 ##    print key, type ( value ), value.shape, numpy.sum( value ) #key is the chromosomes and the value of the arrays
 Count_A = 0
@@ -52,8 +50,9 @@ Count_AC = 0
 Count_BC = 0
 Count_ABC = 0
 for filename in ("DM3_Kc_BEAF.bed", "DM3_Kc_CTCF.bed", "DM3_Kc_SuHW.bed"):
+    #this allows for me to use any of the files for the next for statement
     for line in open( filename ):
-        fields = line.split()
+        fields = line.split()#pulls out splices for each ind array
         #parse fields
         chrom = fields[0]
         start = int( fields[1] )
@@ -79,10 +78,8 @@ for filename in ("DM3_Kc_BEAF.bed", "DM3_Kc_CTCF.bed", "DM3_Kc_SuHW.bed"):
             Count_A+=1
           
 print Count_ABC, Count_A, Count_AB, Count_AC, Count_BC, Count_B, Count_C
-All = int(Count_ABC / 3)
-AB = int(Count_AB / 2)
-BC = int(Count_BC / 2)
-AC = int(Count_AC / 2)
+
 plt.figure()
-v = venn3(subsets=(Count_A, Count_B, AB, Count_C, AC, BC, All), set_labels=("BEAF", "CTCF", "SuHW"))
+v = venn3(subsets=(Count_A, Count_B, Count_AB, Count_C, Count_AC, Count_BC, Count_ABC), set_labels=("BEAF", "CTCF", "SuHW"))
 plt.savefig("VennDiagram.png")
+
